@@ -1,8 +1,25 @@
 #%%
+import warnings
+# from warnings import ImportWarning
+# This is used to suppress the requests warning (See: https://github.com/urllib3/urllib3/issues/3020)
+# warnings.filterwarnings("ignore", message="NotOpenSSLWarning")
+# warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+# Ignore all warnings
+warnings.simplefilter("ignore")
+
+
+#%%
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+warnings.resetwarnings()
+
+# from selenium 
+
+# Reset the warning filter to its original state
+# warnings.filters = original_warning_filters
 
 # import numpy
 # BeautifulSoup
