@@ -7,144 +7,228 @@
 #%%
 import module_test_io
 import re
+import json
 # from bs4 import BeautifulSoup
 
 
 #%%
-def get_html(args):
+def get_html_(args):
     url = module_test_io.parse_input(args)
     html = module_test_io.get_html(url)
+    print(url)
     assert( module_test_io.verify_html(html) )
-    info = module_test_io.parse_html(html, args)
-    print(info) 
 
-    return (url, html)
+    # For debugging
+    headers, cells = module_test_io.parse_html_(html)
+    # print(info)
+
+    return (url, headers, cells)
+
 
 #%%
+args_empty = {}
+args_empty['user'] = ''
+args_empty['ranking'] = 'overall-ranking'
+args_empty['ranking_type'] = 'legendary'
+args_empty['region'] = ''
+args_empty['reboot'] = ''
+args_empty['index'] = ''
+
 args = []
 
-users = ['Doop70', 'Niru', 'ImHeroic']
-users = ['Ender90']
+# Generate different sets of args
+args_ = args_empty.copy()
+args_['user'] = 'Doop70'
+# Append to full list of args to pass through
+# The next section will yield multiple output tables (parsed from html)
+args.append(args_)
 
-for user in users:
-    args_ = {}
+args_ = args_empty.copy()
+args_['index'] = 1232
+# Append to full list of args to pass through
+# The next section will yield multiple output tables (parsed from html)
+args.append(args_)
 
-    # args_['user'] = None
-    args_['user'] = user
-    
-    args_['ranking'] = 'overall-ranking'
-    args_['ranking_type'] = 'legendary'
-    args_['region'] = None
-    args_['reboot'] = None
-    args_['index'] = None
-    
-    args.append(args_)
+args_ = args_empty.copy()
+args_['user'] = 'Niru'
+args.append(args_)
 
-# args_ = args[1]
+args_ = args_empty.copy()
+args_['user'] = 'ImHeroic'
+args.append(args_)
+
+args_ = args_empty.copy()
+args_['user'] = 'UranoZero'
+args_['ranking'] = 'fame-ranking'
+args_['ranking_type'] = 'weekly'
+args.append(args_)
+
+args_ = args_empty.copy()
+args_['user'] = 'UranoZero'
+args_['ranking'] = 'fame-ranking'
+args_['ranking_type'] = 'legendary'
+args.append(args_)
+
+# # NEED WORLD
+# args_ = args_empty.copy()
+# args_['ranking'] = 'guild'
+# args_['ranking_type'] = 'classic'
+# args.append(args_)
+
+args_ = args_empty.copy()
+args_['ranking'] = 'legion'
+args_['ranking_type'] = 'bera'
+args.append(args_)
+
+# # WEIRD OUTPUT
+# args_ = args_empty.copy()
+# args_['ranking'] = 'legion-arena'
+# args_['ranking_type'] = 'season1'
+# args.append(args_)
+
+args_ = args_empty.copy()
+args_['ranking'] = 'maplerunner'
+args_['ranking_type'] = ''
+args.append(args_)
+
+args_ = args_empty.copy()
+args_['ranking'] = 'world-ranking'
+args_['ranking_type'] = 'aurora'
+args.append(args_)
+
+
+# Take only a subset of args
+# args = args[3:]
+args = args[1:2]
+
 
 #%%
-htmls = []
+tables = []
 for i, args_ in enumerate(args):
     print('Processing Dataset %d of %d' % (i+1, len(args)))
-    htmls.append( get_html(args_) )
+    # tables.append( get_html_(args_) )
+    tables.append( module_test_io.main(args_) )
 print('Completed')
 
 #%%
-html = htmls[0][1]
-# html = htmls[1][1]
-# html = htmls[2][1]
+
+j = 0
+i = -1
+
+headers = tables[j][1]
+cells = tables[j][2]
+
+header = headers[i]
+cell = cells[i]
+
+print(headers)
 
 # %%
-# Find all table rows
-# There should only be two: the table column names and the character data
-table_rows = html.find_all(class_="c-rank-list__table-row")
-# if len(table_rows) != 2:
-#     print("Something happend")
+# This is the key name which will be passed to the parent function
+# By default, it is the same as the header parsed from the html, 
+#   but it may be changed below 
+header_name = header
 
-# Get the table header
-table_headers = [cell.get_text() for cell in table_rows[0].find_all(class_="c-rank-list__table-cell-text")]
-table_cells = table_rows[1].find_all(class_="c-rank-list__table-cell-text")
+if header == "Rank":
+    cell_value = cell.get_text()
+    # If the rank was not found, it may have been an image 
+    #   (literal image of a 1st/2nd/3rd place medal)
+    if not cell_value:
+        # Find the <img> element within the Tag, then get its source
+        rank_img = cell.find('img').get('src')
+        # Look for the medalX.png part
+        rank_medal_regex = re.search(r'medal\d\.png', rank_img)
+        if rank_medal_regex:
+            rank_medal = rank_medal_regex.group()
+            cell_value = rank_medal[5:6]
+        else:
+            cell_value = None
 
-# First, let's check that we have the same number of headers as cells
-if len(table_headers) != len(table_cells):
-    print("Something happend")
 
-# Generate dictionary containing the rank information for this character
-ranking = {}
-# value: str
-# Next, let's loop through the headers and print corresponding output from the cells based on each header
-for header, cell in zip(table_headers, table_cells):
-    header_name = header
+elif header == "Character":
+    header_name = "Character Img"
+    cell_value = cell.find("img")["src"]
+elif header == "Character Name":
+    cell_value = cell.get_text()
+elif header == "World":
+    cell_value = cell.find("a")["class"][1]
+elif header == "Job":
+    cell_value = cell.find("img")["title"]
+elif header == "Exp Gained":
+    cell_value = cell.get_text()
+elif header == "Level/Move": 
+    # This div contains three elements, as well as a class indicating rank up/down/draw
+    text_elements = [elem.get_text() for elem in cell.find_all(string=True)]
+    rank_dir = cell.find('div').get('class')[0]
 
-    if header == "Rank":
-        value = cell.get_text()
-        # If the rank was not found, it may have been an image 
-        #   (literal image of a 1st/2nd/3rd place medal)
-        if not value:
-            # Find the <img> element within the Tag, then get its source
-            rank_img = cell.find('img').get('src')
-            # Look for the medalX.png part
-            rank_medal_regex = re.search(r'medal\d\.png', rank_img)
-            if rank_medal_regex:
-                rank_medal = rank_medal_regex.group()
-                value = rank_medal[5:6]
-            else:
-                value = ''
-    
-    
-    elif header == "Character":
-        header_name = "Character Img"
-        value = cell.find("img")["src"]
-    elif header == "Character Name":
-        value = cell.get_text()
-    elif header == "World":
-        value = cell.find("a")["class"][1]
-    elif header == "Job":
-        value = cell.find("img")["title"]
-    elif header == "Exp Gained":
-        value = cell.get_text()
-    elif header == "Level/Move": 
-        value = {}
-        # This div contains three elements, as well as a class indicating rank up/down/draw
-        text_elements = [elem.get_text() for elem in cell.find_all(string=True)]
-        rank_dir = cell.find('div').get('class')[0]
+    # Handle neutral case
+    if text_elements[2] == "-": 
+        text_elements[2] = '0'
 
-        # Handle neutral case
-        if text_elements[2] == "-": 
-            text_elements[2] = '0'
+    # Parse the rank direction
+    # Remove redundant "rank" text
+    rank_dir = rank_dir.replace("rank-", "")
 
-        # Parse the rank direction
-        # Remove redundant "rank" text
-        rank_dir = rank_dir.replace("rank-", "")
+    cell_value = {}
+    cell_value["Level"] = text_elements[0]
+    # Only experience gained during this level
+    cell_value["Level Exp"] = text_elements[1]
+    cell_value["Rank Change"] = text_elements[2]
+    cell_value["Rank Direction"] = rank_dir
 
-        value["Level"] = text_elements[0]
-        # Only experience gained during this level
-        value["Level Exp"] = text_elements[1]
-        value["Rank Change"] = text_elements[2]
-        value["Rank Direction"] = rank_dir
+elif header == "Tier":
+    cell_value = cell.get_text()
+    # If the rank was not found, it may have been an image 
+    #   (literal image of a 1st/2nd/3rd place medal)
+    if not cell_value:
+        # Find the <img> element within the Tag, then get its source
+        tier_img = cell.find('img').get('src')
+        # Look for the medalX.png part
+        tier_medal_regex = re.search(r'tier\/.+\.png', tier_img)
+        if tier_medal_regex:
+            tier_medal = tier_medal_regex.group()
+            cell_value = tier_medal[5:-4]
+        else:
+            cell_value = None
+elif header == "Score":
+    cell_value = cell.get_text()
 
-    else: 
-        print("Invalid header: %s" % header)
-        value = cell
+elif header == "Fame Gained":
+    cell_value = cell.get_text()
+elif header == "Total Fame":
+    cell_value = cell.get_text()
 
-    ranking[header_name] = value
+elif header == "Guild Name":
+    cell_value = cell.get_text()
+elif header == "Guild Level":
+    cell_value = cell.get_text()
+elif header == "Guild Master":
+    cell_value = cell.get_text()
+elif header == "Honor Exp":
+    cell_value = cell.get_text()
 
-ranking
+elif header == "Legion Level":
+    cell_value = cell.get_text()
+elif header == "Raid Power":
+    cell_value = cell.get_text()
 
+elif header == "Stars/Stage/Time": 
+    # Extract the text, exclude the <br/> Tags
+    text_elements = [item for item in cell.contents if isinstance(item, str)]
+
+    cell_value = {}
+    cell_value["Stars"] = text_elements[0]
+    # Only experience gained during this level
+    cell_value["Stage"] = text_elements[1]
+    cell_value["Time"] = text_elements[2]
+
+else: 
+    print("Invalid header: %s" % header)
+    cell_value = cell
+
+print(cell_value)
 
 #%%
-
-tag = cell
-# text_elements = [element.get_text() for element in tag.find_all(string=True, recursive=True)]
-text_elements = [element.get_text() for element in cell.find_all(string=True)]
-
-# Level, Exp, Rank Change, Rank Direction (rank-up, rank-down, rank-draw)
-
-# Get the class attribute of the inner div (if present)
-inner_class = cell.find('div').get('class')[0]
-
-print("Text Elements:", text_elements)
-print("Inner Div Class:", inner_class)
 
 
 
@@ -153,6 +237,10 @@ print("Inner Div Class:", inner_class)
 # Test timing of the headless chrome browser
 # Try different startup options
 raise
+
+from time import time
+url = module_test_io.parse_input(args[0])
+
 chrome_args_list = [
     [], 
     ["--disable-gpu"], 
@@ -164,9 +252,12 @@ chrome_args_list = [
     ["--disable-css"]
 ]
 
-chrome_args = chrome_args_list[0]
-# These options may or may not help speed this process up
-html = module_test_io.get_html(url, chrome_args)
+for chrome_args in chrome_args_list:
+    starttime = time()
+    # These options may or may not help speed this process up
+    # chrome_args.append("--ignore-certificate-errors")
+    html = module_test_io.get_html(url, chrome_args)
+    print("HTML with %s took %0.2f seconds" % (chrome_args, time() - starttime))
 
 
 #%%
