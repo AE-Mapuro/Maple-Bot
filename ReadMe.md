@@ -13,7 +13,11 @@ discord where the bot is added.
    - Windows - run `call venv/Scripts/activate` depending on where your venv is
    - Mac - run `source ./venv/bin/activate`
 5. Now inside the `venv`, install the required libraries with ` pip install -r requirements.txt`
-6. Test by running `python src/maple_bot.py`
+6. Configure `src/resources/env.py` with the appropriate credentials:
+   - `discord_bot_token` 
+   - `discord_bot_guild`
+   - `discord_guild_id`
+7. Test by running `python src/maple_bot.py`
 
 ## Slash Commands
 ### Maple Ranking Commands
