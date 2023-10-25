@@ -13,7 +13,7 @@ discord where the bot is added.
    - Windows - run `call venv/Scripts/activate` depending on where your venv is
    - Mac - run `source ./venv/bin/activate`
 5. Now inside the `venv`, install the required libraries with ` pip install -r requirements.txt`
-6. Configure `src/resources/env.py` with the appropriate credentials:
+6. Configure `resources/env.py` with the appropriate credentials:
    - `discord_bot_token` 
    - `discord_bot_guild`
    - `discord_guild_id`
@@ -30,3 +30,4 @@ Additional Commands to be added
 - [`discord-py-interactions`](https://pypi.org/project/discord-py-interactions/) - A highly extensible, easy to use, and feature complete framework for Discord.
 - [`requests`](https://pypi.org/project/requests/) -  send HTTP/1.1 requests
 - [`selenium`](https://pypi.org/project/selenium/) - Python language bindings for Selenium WebDriver
+- [`bs4`](https://pypi.org/project/beautifulsoup4/) - Package to handle XPath and Html pathing
