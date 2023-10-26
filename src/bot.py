@@ -1,6 +1,3 @@
-from sys import path 
-path.append('../resources')
-
 import interactions
 from resources import env
 import random
@@ -50,7 +47,7 @@ async def askCommand(ctx: interactions.SlashContext, question: str, severity: in
     response: str = f"{random.choice(responses)} {random.choice(expressions)}"
 
     # Message to be sent when input question is too long
-    # TODO This may be moved outside function scope
+    # TODO This variable may be moved outside function scope
     bot_response_too_long = f'The question is too long and/or the severity is too high. {BOT_NAME} is limited to responses {BOT_MSG_LEN_LIM} characters or fewer.'
     
     print(f'Command Message - ID: {ctx.message_id} -> {ctx.message}')
@@ -62,6 +59,7 @@ async def askCommand(ctx: interactions.SlashContext, question: str, severity: in
     else:
         messages.append( await ctx.send( bot_response_too_long ) )
 
+    # * Use this as a debug point 
     return
 
 
