@@ -2,4 +2,7 @@ pyenv/
 .idea/
 .vscode/
 
+resources/env.py
+
 **/.DS_Store
+**/__pycache__
