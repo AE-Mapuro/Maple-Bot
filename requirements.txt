@@ -2,3 +2,5 @@ bs4
 selenium
 
 requests
+python_version >= "3.10"
+discord-py-interactions==5.10.0
