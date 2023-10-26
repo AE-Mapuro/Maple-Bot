@@ -30,7 +30,7 @@ async def on_ready():
 async def askGrendel(ctx: interactions.SlashContext, question: interactions.OptionType.STRING,
                      number_of_question_marks: interactions.OptionType.INTEGER = 1):
     responses = ['', 'No', 'Whyyyy', 'Nani', 'Jes', 'Nani Kore', 'Watashi wa Kotowaru', 'Plz', 'Plz No',
-                 'No Violins Plox', 'This is too difficult to answer']
+                 'No Violins Plox', 'This is too difficult to answer', 'A\'grid is back!']
     expressions = ['(ㆆ _ ㆆ)', '⊂(◉‿◉)つ', '•`_´•', 'ʕっ•ᴥ•ʔっ', '(•_•) ( •_•)>⌐■-■ (⌐■_■)', '(｡◕‿‿◕｡)', '(︶︹︶)',
                    '┻━┻ ︵ヽ(`Д´)ﾉ︵ ┻━┻', '(ง •̀_•́)ง', '(ノಠ益ಠ)ノ彡┻━┻', R'¯\_(ツ)_/¯']
 
