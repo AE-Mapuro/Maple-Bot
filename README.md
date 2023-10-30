@@ -23,11 +23,12 @@ Run `python --version` to verify this.
 3. Instantiate a python virtual environment<sup>[1]</sup>  
    `python -m venv pyenv`
 4. Activate the virtual environment<sup>[2]</sup>  
-   - Windows - run `call ./pyenv/Scripts/activate`
-   - Mac - run `source ./pyenv/bin/activate`
+   - Windows - `.\pyenv\Scripts\activate`
+   - Linux/Mac - `source ./pyenv/bin/activate`
 5. Install the required python packages
    `pip install -r requirements.txt`
-6. Create an `env.py` file to contain the bot credentials. Do this by copying the existing `env_.py` file.  
+6. Create an `env.py` file to contain the bot credentials.
+   Do this by copying the existing barebones `env_.py` file.  
    `cp resources/env_.py resources/env.py`
 7. Configure `resources/env.py` with the appropriate credentials:
    - `discord_bot_token` 
