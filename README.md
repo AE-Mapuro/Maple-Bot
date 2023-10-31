@@ -28,8 +28,8 @@ Run `python --version` to verify this.
 5. Install the required python packages
    `pip install -r requirements.txt`
 6. Create an `env.py` file to contain the bot credentials.
-   Do this by copying the existing barebones `env_.py` file.  
-   `cp resources/env_.py resources/env.py`
+   Do this by copying the existing barebones `env_template.py` file.  
+   `cp resources/env_template.py resources/env.py`
 7. Configure `resources/env.py` with the appropriate credentials:
    - `discord_bot_token` 
    - `discord_bot_guild`
