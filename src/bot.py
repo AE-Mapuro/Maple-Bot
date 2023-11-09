@@ -63,5 +63,10 @@ async def askCommand(ctx: interactions.SlashContext, question: str, severity: in
     return
 
 
+# Load Extensions
+# We may want to use iteration on a folder in the future
+# https://interactions-py.github.io/interactions.py/Guides/20%20Extensions/#advanced-usage
+client.load_extension("src.shenanigans.shenanigans")
+
 # Start the bot
 client.start(env.discord_bot_token)
