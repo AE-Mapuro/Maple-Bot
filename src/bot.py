@@ -1,12 +1,14 @@
-import interactions
+from interactions import *
 from resources import env
 
-intents = interactions.Intents.DEFAULT | interactions.Intents.MESSAGE_CONTENT
-client = interactions.Client(intents=intents, description="Maple Bot")
+intents = Intents.DEFAULT | Intents.MESSAGE_CONTENT | Intents.PRIVILEGED | Intents.GUILDS
+# intents = Intents.MESSAGE_CONTENT | Intents.PRIVILEGED | Intents.GUILDS | Intents.PRIVILEGED
+
+client = Client(intents=intents, description="Maple Bot")
 
 
 # First to indicate successful login
-@interactions.listen()
+@listen()
 async def on_ready():
     # We can use the client "me" attribute to get information about the bot.
     print(f"We're online! We've logged in as {client.user.username}.")
@@ -17,6 +19,9 @@ async def on_ready():
 # https://interactions-py.github.io/interactions.py/Guides/20%20Extensions/#advanced-usage
 client.load_extension("src.exts.shenanigans.shenanigans")
 client.load_extension("src.exts.shenanigans.ask")
+client.load_extension("src.exts.shenanigans.react")
 
 # Start the bot
 client.start(env.discord_bot_token)
+
+
