@@ -15,7 +15,6 @@ class React(Extension):
         for member in guild.members:
             self.users[member.user.username] = False
 
-
     @listen(MessageCreate)
     async def handle_message(self, event: MessageCreate):
         if event.message.author.username in self.users and self.users[event.message.author.username]:
