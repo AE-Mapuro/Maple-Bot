@@ -31,9 +31,9 @@ Run `python --version` to verify this.
    Do this by copying the existing barebones `env_template.py` file.  
    `cp resources/env_template.py resources/env.py`
 7. Configure `resources/env.py` with the appropriate credentials:
-   - `discord_bot_token` 
-   - `discord_bot_guild`
-   - `discord_guild_id`
+   - `discord_bot_token` - String value of your bot token from the discord developer portal
+   - `discord_bot_guild` - String Guild Name - Optional
+   - `discord_guild_ids` - List of guild ids the bot has access to
 8. Start up the bot
     `python -m src.bot.py`
 
