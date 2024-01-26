@@ -11,7 +11,7 @@ def get_cmd_information():
 ### `ask` - And ye shall receive.
 - `question` - Your question to wise Grendel
 - `severity` - How severe is your question??
-### `toggle` - Toggle auto msg reacts for the user
+### `cry` - Toggle auto msg reacts for the user
 - `user` - optional argument to select specific user. Default is yourself 
     '''
 

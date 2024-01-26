@@ -20,7 +20,7 @@ class React(Extension):
         if event.message.author.username in self.users and self.users[event.message.author.username]:
             await event.message.add_reaction(emoji='<:bugcat_cry:886858534136987678>')
 
-    @SC.shenanigans.subcommand(sub_cmd_name='toggle',
+    @SC.shenanigans.subcommand(sub_cmd_name='cry',
                                sub_cmd_description='Toggle the auto reaction on or off')
     @slash_option(name='user',
                   description='User to be toggled On or Off',
