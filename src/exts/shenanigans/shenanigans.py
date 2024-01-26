@@ -26,7 +26,8 @@ class ShenaniganCommands(Extension):
     async def shenanigans(self, ctx: SlashContext):
         information = get_cmd_information()
 
-        embed = Embed(title='<:sophia_wat:886857371689844737> Shenanigan Commands Info',
+        embed = Embed(title='<:sophia_wat:886857371689844737> **Shenanigan Commands Info** '
+                            '<:sophia_wat:886857371689844737>',
                       description=information,
                       color=Color.from_rgb(98, 242, 175))
         await ctx.send(embeds=embed)
