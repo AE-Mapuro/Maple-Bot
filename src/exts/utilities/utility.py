@@ -5,8 +5,9 @@ import resources.env as env
 def get_cmd_information():
     return \
         '''### `poll` - Create a poll 
-- `question` - Your question to everybody 
-- `choices` - Choices separated by g"|" and with "~" for each <emoji>~<choice> if a custom emoji is desired. 🔮~A|🎃~B|C. Limit 10'''
+- `question` - Your question to everybody
+- `choices` - Choices separated by g"|" and with "~" for each <emoji>~<choice> if a custom emoji is desired such as 🍔~A|🍝~B|C. Limit 10
+/util poll question| What item? choices| 🔮~Globe|🎃~Pumpkin|Cookie'''
 
 
 class Utility(Extension):
