@@ -44,8 +44,6 @@ class Poll(Extension):
         for emoji in poll_choices.keys():
             await message.add_reaction(emoji=f'{emoji}')
 
-        ctx.channel.fetch_message()
-
 
 def setup(bot):
     Poll(bot)
