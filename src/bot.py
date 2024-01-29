@@ -20,6 +20,8 @@ async def on_ready():
 client.load_extension("src.exts.shenanigans.shenanigans")
 client.load_extension("src.exts.shenanigans.ask")
 client.load_extension("src.exts.shenanigans.react")
+client.load_extension("src.exts.utilities.utility")
+client.load_extension("src.exts.utilities.poll")
 
 # Start the bot
 client.start(env.discord_bot_token)
