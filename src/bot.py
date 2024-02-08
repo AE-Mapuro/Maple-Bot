@@ -22,6 +22,7 @@ client.load_extension("src.exts.shenanigans.ask")
 client.load_extension("src.exts.shenanigans.react")
 client.load_extension("src.exts.utilities.utility")
 client.load_extension("src.exts.utilities.poll")
+client.load_extension("src.exts.games.games")
 
 # Start the bot
 client.start(env.discord_bot_token)
