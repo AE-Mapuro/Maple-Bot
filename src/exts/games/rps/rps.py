@@ -16,5 +16,20 @@ class RockPaperScissors(Extension):
                       timestamp=Timestamp.now())
         return embed
 
+    def build_buttons(self) -> list[Button]:
+        return [Button(
+            style=ButtonStyle.GREEN,
+            emoji='🪨',
+            custom_id=f'rock'
+        ), Button(
+            style=ButtonStyle.GREEN,
+            emoji='📃',
+            custom_id=f'paper',
+        ), Button(
+            style=ButtonStyle.GREEN,
+            emoji='✂',
+            custom_id=f'scissor',
+        )]
+
 def setup(bot):
     RockPaperScissors(bot)
