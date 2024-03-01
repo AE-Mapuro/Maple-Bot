@@ -31,5 +31,12 @@ class RockPaperScissors(Extension):
             custom_id=f'scissor',
         )]
 
+    def add_new_player(self, user_id: str, user_name: str):
+        self.games[user_id] = {"username": user_name,
+                               "net_score": 0,
+                               "user_score": 0,
+                               "bot_score": 0,
+                               "tie": 0}
+
 def setup(bot):
     RockPaperScissors(bot)
